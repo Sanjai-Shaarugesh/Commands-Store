@@ -1,0 +1,75 @@
+.command-store-popup {
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 12px;
+    padding: 15px;
+    color: white;
+}
+
+.header-box {
+    margin-bottom: 10px;
+}
+
+.title-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.desc-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.input-box {
+    spacing: 5px;
+    margin-bottom: 10px;
+}
+
+.command-input, .search-input {
+    background-color: rgba(50, 50, 50, 0.8);
+    color: white;
+    border-radius: 6px;
+    padding: 8px;
+    border: none;
+}
+
+.add-button, .update-button, .edit-mode-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    padding: 5px 10px;
+    transition: background-color 0.2s;
+    margin-left: 5px;
+}
+
+.add-button:hover, .update-button:hover, .edit-mode-button:hover {
+    background-color: #45a049;
+}
+
+.command-list-scroll {
+    max-height: 250px;
+}
+
+.command-item {
+    background-color: rgba(50, 50, 50, 0.6);
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 5px;
+    spacing: 10px;
+}
+
+.command-label {
+    color: white;
+}
+
+.delete-button, .edit-button {
+    background-color: rgba(200, 50, 50, 0.7);
+    color: white;
+    border-radius: 4px;
+    padding: 3px 6px;
+    margin-left: 5px;
+}
+
+.edit-button {
+    background-color: rgba(50, 100, 200, 0.7);
+}
