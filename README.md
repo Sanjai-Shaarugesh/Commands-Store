@@ -14,15 +14,19 @@ Command Store is a powerful GNOME extension that helps users save, manage, and q
 ## Installation
 
 ### From GNOME Extensions Website
-1. Visit [extensions.gnome.org](https://extensions.gnome.org)
+1. Visit [https://extensions.gnome.org/extension/7591/commands-store/](https://extensions.gnome.org)  
 2. Search for "Command Store"
 3. Toggle the switch to install the extension
 
+#### Install from extensions.gnome.org (Recommended)
+
+[<img src="images/gnome.png" height="100">](https://extensions.gnome.org/extension/7591/commands-store/)
+
 ### Manual Installation
 ```bash
-git clone https://github.com/yourusername/command-store.git
-cd command-store
-make install
+git clone https://github.com/Sanjai-Shaarugesh/Commands-Store
+cd command-store 
+make installhttps://github.com/Sanjai-Shaarugesh/Commands-Store/
 ```
 
 ## Usage
@@ -32,11 +36,14 @@ make install
 4. Use quick search to retrieve commands
 
 ## Screenshots
-![Main Interface](screenshot://command-store-main.png)
-![Add Command Dialog](screenshot://command-store-dialog.png)
+![Main Interface](images/image1.png)
+
+![Add Command Dialog](images/image2.png)
+
+![Edit Command](images/image3.png)
 
 ## Requirements
-- GNOME Shell 40+
+- GNOME Shell 45+
 - Linux distribution with GNOME desktop
 
 ## Contributing
@@ -46,7 +53,11 @@ Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) fo
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Support
-If you encounter any issues or have suggestions, please [open an issue](https://github.com/yourusername/command-store/issues) on GitHub.
+If you encounter any issues or have suggestions, please [open an issue](https://github.com/Sanjai-Shaarugesh/Commands-Store/issues) on GitHub.
+
+[<img src="images/github.png" height="100">](https://github.com/Sanjai-Shaarugesh/Commands-Store)
+
+
 
 ## Acknowledgments
 - GNOME Extensions community

@@ -1,11 +1,11 @@
 {
+    "uuid": "commandsstore@shaarugesh6.gmail.com",
     "name": "Commands Store",
     "description": "A simple GNOME Shell extension to store and manage commands",
-    "uuid": "commandsstore@shaarugesh6.gmail.com",
     "shell-version": ["45", "46", "47"],
+    "url": "https://github.com/Sanjai-Shaarugesh/Commands-Store",
     "version": 1,
-    "url": "",
     "settings-schema": null,
-    "gettext-domain": "",
+    "gettext-domain": "commandsstore@shaarugesh6.gmail.com",
     "session-modes": ["user"]
 }

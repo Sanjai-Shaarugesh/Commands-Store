@@ -15,24 +15,24 @@ export default class CommandStoreExtension extends Extension {
     }
 
     enable() {
-        
+        // Create panel indicator with icon
         this._indicator = new PanelMenu.Button(0.0, this.metadata.name);
         
-        
+        // Create icon
         let icon = new St.Icon({
             icon_name: 'utilities-terminal-symbolic',
             style_class: 'system-status-icon'
         });
         this._indicator.add_child(icon);
 
-        
+        // Create main popup layout
         let mainBox = new St.BoxLayout({
             vertical: true,
             style_class: 'command-store-popup',
             width: 350
         });
 
-        
+        // Header with title and description
         let headerBox = new St.BoxLayout({
             vertical: true,
             style_class: 'header-box'
@@ -48,7 +48,7 @@ export default class CommandStoreExtension extends Extension {
         headerBox.add_child(titleLabel);
         headerBox.add_child(descLabel);
 
-        
+        // Input area
         let inputBox = new St.BoxLayout({
             style_class: 'input-box'
         });
@@ -71,51 +71,51 @@ export default class CommandStoreExtension extends Extension {
         inputBox.add_child(addButton);
         inputBox.add_child(updateButton);
 
-        
+        // Scrollable command list container
         let scrollView = new St.ScrollView({
             style_class: 'command-list-scroll'
         });
         
-        
+        // Command list inside scroll view
         let commandList = new St.BoxLayout({
             vertical: true,
             style_class: 'command-list'
         });
         scrollView.set_child(commandList);
 
-        
+        // Search and filter
         let searchField = new St.Entry({
             hint_text: "Search commands...",
             style_class: "search-input"
         });
 
-        
+        // Edit mode toggle
         let editModeButton = new St.Button({
             label: "Edit",
             style_class: "edit-mode-button"
         });
 
-        
+        // Assemble main layout
         mainBox.add_child(headerBox);
         mainBox.add_child(searchField);
         mainBox.add_child(inputBox);
         mainBox.add_child(editModeButton);
         mainBox.add_child(scrollView);
 
-        
+        // Add to indicator menu
         let popupMenuItem = new PopupMenu.PopupBaseMenuItem({
             reactive: false
         });
         popupMenuItem.add_child(mainBox);
         this._indicator.menu.addMenuItem(popupMenuItem);
 
-        
+        // Event Handling
         addButton.connect("clicked", () => this._addCommand(inputField, commandList));
         
-        
+        // Update button handler
         updateButton.connect("clicked", () => this._updateCommand(inputField, updateButton, addButton));
 
-        
+        // Edit mode toggle
         editModeButton.connect("clicked", () => {
             this._editMode = !this._editMode;
             editModeButton.label = this._editMode ? "Done" : "Edit";
@@ -127,10 +127,10 @@ export default class CommandStoreExtension extends Extension {
             this._filterCommands(commandList, searchField.text);
         });
 
-        
+        // Add to panel
         Main.panel.addToStatusArea(this.uuid, this._indicator);
 
-        
+        // Store references for later use
         this._inputField = inputField;
         this._commandList = commandList;
         this._addButton = addButton;
@@ -141,13 +141,13 @@ export default class CommandStoreExtension extends Extension {
         const newCommand = inputField.text.trim();
         
         if (newCommand) {
-            
+            // Create command item with delete button
             let commandBox = this._createCommandItem(newCommand, commandList);
             
             commandList.add_child(commandBox);
             this._dataStore.push(newCommand);
             
-            
+            // Clear input
             inputField.set_text("");
             
             console.log(`Command added: ${newCommand}`);
@@ -198,7 +198,7 @@ export default class CommandStoreExtension extends Extension {
         this._addButton.visible = false;
         this._updateButton.visible = true;
         
-       
+        // Store current editing context
         this._currentEditingCommand = {
             originalCommand: currentCommand,
             commandBox: commandBox
@@ -209,22 +209,22 @@ export default class CommandStoreExtension extends Extension {
         const updatedCommand = inputField.text.trim();
         
         if (updatedCommand && this._currentEditingCommand) {
-            
+            // Update data store
             const index = this._dataStore.indexOf(this._currentEditingCommand.originalCommand);
             if (index !== -1) {
                 this._dataStore[index] = updatedCommand;
             }
             
-            
+            // Update UI
             let labelWidget = this._currentEditingCommand.commandBox.get_child_at_index(0);
             labelWidget.set_text(updatedCommand);
             
-           
+            // Reset UI
             inputField.set_text("");
             updateButton.visible = false;
             addButton.visible = true;
             
-            
+            // Clear editing context
             this._currentEditingCommand = null;
         }
     }
