@@ -5,7 +5,5 @@
     "shell-version": ["45", "46", "47"],
     "url": "https://github.com/Sanjai-Shaarugesh/Commands-Store",
     "version": 1,
-    "settings-schema": null,
-    "gettext-domain": "commandsstore@shaarugesh6.gmail.com",
-    "session-modes": ["user"]
+    "gettext-domain": "commandsstore@shaarugesh6.gmail.com"
 }
