@@ -13,7 +13,6 @@ export default class CommandStoreExtension extends Extension {
         this._indicator = null;
         this._editMode = false;
 
-       
         this._commands = {}; 
 
         this._currentEditingCommand = null;
@@ -21,20 +20,18 @@ export default class CommandStoreExtension extends Extension {
         this._addButton = null;
         this._updateButton = null;
         this._commandList = null;
+        this._commandsFilePath = null;
+    }
 
-        
+    enable() {
         this._commandsFilePath = GLib.build_filenamev([
             GLib.get_user_cache_dir(), 
             'command-store-extension',
             'commands.json'
         ]);
-    }
-
-    enable() {
         
         GLib.mkdir_with_parents(GLib.path_get_dirname(this._commandsFilePath), 0o755);
 
-        
         this._loadCommands();
 
         this._indicator = new PanelMenu.Button(0.0, this.metadata.name);
@@ -136,7 +133,6 @@ export default class CommandStoreExtension extends Extension {
         this._populateCommandList();
     }
 
-    
     _saveCommands() {
         try {
             let jsonCommands = JSON.stringify(this._commands, null, 2);
@@ -147,23 +143,19 @@ export default class CommandStoreExtension extends Extension {
         }
     }
 
-    
     _loadCommands() {
         try {
-            
             if (!GLib.file_test(this._commandsFilePath, GLib.FileTest.EXISTS)) {
                 console.log('No saved commands file found');
                 return; 
             }
 
-            
             let [success, contents] = GLib.file_get_contents(this._commandsFilePath);
             if (!success) {
                 console.error('Failed to read commands file');
                 return;
             }
 
-            
             let jsonCommands = new TextDecoder().decode(contents);
             this._commands = JSON.parse(jsonCommands);
             console.log('Commands loaded successfully');
@@ -173,7 +165,6 @@ export default class CommandStoreExtension extends Extension {
     }
 
     _populateCommandList() {
-        
         this._commandList.remove_all_children();
 
         for (const commandId in this._commands) {
@@ -182,7 +173,6 @@ export default class CommandStoreExtension extends Extension {
         }
     }
 
-    
     _createCommandItem(command) {
         let commandBox = new St.BoxLayout({
             style_class: 'command-item'
@@ -215,7 +205,6 @@ export default class CommandStoreExtension extends Extension {
                 }
             }
 
-            
             this._saveCommands();
         });
 
@@ -235,7 +224,6 @@ export default class CommandStoreExtension extends Extension {
         this._addButton.visible = false;
         this._updateButton.visible = true;
 
-        
         this._currentEditingCommand = { command, commandBox };
     }
 
@@ -250,7 +238,6 @@ export default class CommandStoreExtension extends Extension {
 
             this._inputField.set_text("");
 
-            
             this._saveCommands();
         }
     }
@@ -260,7 +247,6 @@ export default class CommandStoreExtension extends Extension {
         if (updatedCommand && this._currentEditingCommand) {
             const { command, commandBox } = this._currentEditingCommand;
 
-            
             for (const commandId in this._commands) {
                 if (this._commands[commandId] === command) {
                     this._commands[commandId] = updatedCommand;
@@ -268,7 +254,6 @@ export default class CommandStoreExtension extends Extension {
                 }
             }
 
-            
             let commandLabel = commandBox.get_child_at_index(0);
             commandLabel.set_text(updatedCommand);
 
@@ -303,17 +288,16 @@ export default class CommandStoreExtension extends Extension {
     }
 
     disable() {
-        
         if (this._indicator) {
             this._indicator.destroy();
             this._indicator = null;
         }
 
-        
         this._inputField = null;
         this._addButton = null;
         this._updateButton = null;
         this._commandList = null;
         this._currentEditingCommand = null;
+        this._commandsFilePath = null;
     }
 }
