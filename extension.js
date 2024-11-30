@@ -13,7 +13,7 @@ export default class CommandStoreExtension extends Extension {
         this._indicator = null;
         this._editMode = false;
 
-        
+       
         this._commands = {}; 
 
         this._currentEditingCommand = null;
@@ -24,12 +24,16 @@ export default class CommandStoreExtension extends Extension {
 
         
         this._commandsFilePath = GLib.build_filenamev([
-            GLib.get_home_dir(), 
-            '.env'
+            GLib.get_user_cache_dir(), 
+            'command-store-extension',
+            'commands.json'
         ]);
     }
 
     enable() {
+        
+        GLib.mkdir_with_parents(GLib.path_get_dirname(this._commandsFilePath), 0o755);
+
         
         this._loadCommands();
 
@@ -135,22 +139,11 @@ export default class CommandStoreExtension extends Extension {
     
     _saveCommands() {
         try {
-            let envContent = '';
-            
-            for (const commandId in this._commands) {
-                
-                const escapedCommand = this._commands[commandId]
-                    .replace(/\\/g, '\\\\')
-                    .replace(/"/g, '\\"')
-                    .replace(/\n/g, '\\n');
-                
-                envContent += `COMMAND_${commandId}="${escapedCommand}"\n`;
-            }
-
-            
-            GLib.file_set_contents(this._commandsFilePath, envContent, envContent.length);
+            let jsonCommands = JSON.stringify(this._commands, null, 2);
+            GLib.file_set_contents(this._commandsFilePath, jsonCommands, jsonCommands.length);
+            console.log('Commands saved successfully');
         } catch (error) {
-            log(`Error saving commands: ${error}`);
+            console.error(`Error saving commands: ${error}`);
         }
     }
 
@@ -159,36 +152,25 @@ export default class CommandStoreExtension extends Extension {
         try {
             
             if (!GLib.file_test(this._commandsFilePath, GLib.FileTest.EXISTS)) {
+                console.log('No saved commands file found');
                 return; 
             }
 
             
             let [success, contents] = GLib.file_get_contents(this._commandsFilePath);
             if (!success) {
-                log('Failed to read .env file');
+                console.error('Failed to read commands file');
                 return;
             }
 
             
-            const envContent = new TextDecoder().decode(contents);
-            const lines = envContent.split('\n');
-            
-            lines.forEach(line => {
-                const match = line.match(/^COMMAND_(\w+)="(.+)"$/);
-                if (match) {
-                    const commandId = match[1];
-                    const command = match[2]
-                        .replace(/\\n/g, '\n')
-                        .replace(/\\"/g, '"')
-                        .replace(/\\\\/g, '\\');
-                    this._commands[commandId] = command;
-                }
-            });
+            let jsonCommands = new TextDecoder().decode(contents);
+            this._commands = JSON.parse(jsonCommands);
+            console.log('Commands loaded successfully');
         } catch (error) {
-            log(`Error loading commands: ${error}`);
+            console.error(`Error loading commands: ${error}`);
         }
     }
-
 
     _populateCommandList() {
         
@@ -228,7 +210,7 @@ export default class CommandStoreExtension extends Extension {
             commandBox.destroy();
             for (const commandId in this._commands) {
                 if (this._commands[commandId] === command) {
-                    delete this._commands[commandId]; // Remove from the in-memory object
+                    delete this._commands[commandId]; 
                     break;
                 }
             }
@@ -260,8 +242,8 @@ export default class CommandStoreExtension extends Extension {
     _addCommand() {
         const newCommand = this._inputField.text.trim();
         if (newCommand) {
-            const commandId = `command_${Date.now()}`; // Unique ID for each command
-            this._commands[commandId] = newCommand; // Save command with a unique ID
+            const commandId = `command_${Date.now()}`; 
+            this._commands[commandId] = newCommand;
 
             let commandBox = this._createCommandItem(newCommand);
             this._commandList.add_child(commandBox);
@@ -321,9 +303,17 @@ export default class CommandStoreExtension extends Extension {
     }
 
     disable() {
+        
         if (this._indicator) {
             this._indicator.destroy();
             this._indicator = null;
         }
+
+        
+        this._inputField = null;
+        this._addButton = null;
+        this._updateButton = null;
+        this._commandList = null;
+        this._currentEditingCommand = null;
     }
 }
