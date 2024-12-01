@@ -14,7 +14,7 @@ Command Store is a powerful GNOME extension that helps users save, manage, and q
 ## Installation
 
 ### From GNOME Extensions Website
-1. Visit [https://extensions.gnome.org/extension/7591/commands-store/](https://extensions.gnome.org)  
+1. Visit [https://extensions.gnome.org/extension/7591/commands-store](https://extensions.gnome.org)  
 2. Search for "Command Store"
 3. Toggle the switch to install the extension
 
